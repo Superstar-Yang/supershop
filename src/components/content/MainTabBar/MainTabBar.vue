@@ -1,35 +1,35 @@
 <template>
   <tab-bar>
-    <tab-bar-item path="/home">
-      <img slot="item-icon" src="~assets/img/tabbar/index.svg" alt="">
-      <img slot="item-icon-active" src="~assets/img/tabbar/index-active.svg" alt="">
+    <tab-bar-item path="/home" activeColor="#D9418B">
+      <img  slot="item-icon" src="~assets/img/index.svg" alt="">
+      <img  slot="item-icon-active" src="~assets/img/index-active.svg" alt="">
       <div slot="item-text">首页</div>
     </tab-bar-item>
-    <tab-bar-item path="/category">
-      <img slot="item-icon" src="~assets/img/tabbar/item.svg" alt="">
-      <img slot="item-icon-active" src="~assets/img/tabbar/item-active.svg" alt="">
+    <tab-bar-item path="/category" activeColor="#D9418B">
+      <img  slot="item-icon" src="~assets/img/category.svg" alt="">
+      <img  slot="item-icon-active" src="~assets/img/category-active.svg" alt="">
       <div slot="item-text">分类</div>
     </tab-bar-item>
-    <tab-bar-item path="/cart">
-      <img slot="item-icon" src="~assets/img/tabbar/shopcar.svg" alt="">
-      <img slot="item-icon-active" src="~assets/img/tabbar/shopcar-active.svg" alt="">
+    <tab-bar-item path="/cart" activeColor="#D9418B">
+      <img  slot="item-icon" src="~assets/img/cart.svg" alt="">
+      <img  slot="item-icon-active" src="~assets/img/cart-active.svg" alt="">
       <div slot="item-text">购物车</div>
-    </tab-bar-item >
-    <tab-bar-item path="/profile">
-      <img slot="item-icon" src="~assets/img/tabbar/profile.svg" alt="">
-      <img slot="item-icon-active" src="~assets/img/tabbar/profile-active.svg" alt="">
+    </tab-bar-item>
+    <tab-bar-item path="/profile" activeColor="#D9418B">
+      <img  slot="item-icon" src="~assets/img/profile.svg" alt="">
+      <img  slot="item-icon-active" src="~assets/img/profile-active.svg" alt="">
       <div slot="item-text">我的</div>
     </tab-bar-item>
   </tab-bar>
 </template>
 <script>
-  import tabBar from 'components/common/05-webpacktabbar/05-webpacktabbar'
-  import tabBarItem from 'components/common/05-webpacktabbar/tabbaritem'
+  import  TabBar from 'components/common/tabbar/tabbar'
+  import  TabBarItem from 'components/common/tabbar/tabbaritem'
   export default {
     name: "MainTabBar",
     components:{
-      tabBar,
-      tabBarItem
+      TabBar,
+      TabBarItem
     }
   }
 </script>
