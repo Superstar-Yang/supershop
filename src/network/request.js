@@ -14,7 +14,7 @@ export function request(config){
     console.log(err);
   })
   instance.interceptors.response.use(res=>{
-    console.log(res);
+    // console.log(res);
     return res.data
   },err=>{
     console.log(err);
