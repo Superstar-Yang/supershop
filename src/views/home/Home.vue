@@ -2,7 +2,7 @@
   <div>
     <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-      <bscroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingup="LoadMore">
+      <bscroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true">
         <home-swiper :banners="banners"></home-swiper>
         <recommend-view :recommends="recommends"></recommend-view>
         <fauter-view></fauter-view>
@@ -95,7 +95,7 @@
       * */
       getHomeMultidata(){
         getHomeMultidata().then(res=>{
-          console.log(res);
+          // console.log(res);
           this.banners = res.data.banner.list;
           this.recommends = res.data.recommend.list;
         })
@@ -104,8 +104,7 @@
         const page = this.goods[type].page+1
         getHomeGoods(type, page).then(res=>{
           this.goods[type].list.push(...res.data.list)
-          this.goods[type].page += 1
-          this.$refs.scroll.finishPullUp()
+          this.goods[type].page +=1
         })
       }
     }

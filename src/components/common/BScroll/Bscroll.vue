@@ -14,10 +14,6 @@
       probeType:{
         type:Number,
         default:0
-      },
-      pullupload:{
-        type:Boolean,
-        default:false
       }
     },
     data(){
@@ -35,11 +31,6 @@
       this.scroll.on('scroll',(position)=>{
         // console.log(position);
         this.$emit('scroll',position)
-      })
-      //监听上拉事件
-      this.scroll.on('pullingUp',()=>{
-        // console.log('上啦加载更多');
-        this.$emit('pullingup')
       })
     },
     methods:{
