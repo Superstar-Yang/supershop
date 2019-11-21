@@ -7,6 +7,9 @@ const Home = () => import('views/home/Home')
 const Cart = () => import('views/cart/Cart')
 const Category = () => import('views/category/Category')
 const proFile = () => import('views/profile/proFile')
+const Detail = () => import('views/detail/detail')
+const Login = () => import('views/login/Login')
+const Register = () => import('views/register/Register')
 
 const routes = [
   {
@@ -29,6 +32,23 @@ const routes = [
     path:'/profile',
     component:proFile
   },
+  {
+    path:'/login',
+    component:Login
+  },
+  {
+    path:'/register',
+    component:Register
+  },
+  {
+    // path:'/detail',
+    path:'/detail/:iid',
+    component:Detail
+  },
+  {
+    path:'*',
+    redirect:'/'
+  }
 ]
 
 const router =  new VueRouter({

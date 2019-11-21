@@ -2,14 +2,22 @@
   <div>
     <div id="home">
       <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-      <bscroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true">
-        <home-swiper :banners="banners"></home-swiper>
+      <tab-constrol class="tab-control"
+                    :titles="['流行','新款','精品']"
+                    @tabClick="tabClick"
+                    ref="tabConstrol1"
+                    v-show="isFixed"/>
+      <bscroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="LoadMore">
+        <home-swiper :banners="banners" @imageLoad="imageLoad"></home-swiper>
         <recommend-view :recommends="recommends"></recommend-view>
         <fauter-view></fauter-view>
-        <tab-constrol class="tab-control" :titles="['流行','新款','精品']" @tabClick="tabClick"/>
+        <tab-constrol class="tab-control"
+                      :titles="['流行','新款','精品']"
+                      @tabClick="tabClick"
+                      ref="tabConstrol2"/>
         <goods-list :goods="showGoods"></goods-list>
       </bscroll>
-      <back-top @click.native="backClick" v-show="isShowbacktop"/>
+      <back-top @click.native="backClick" v-show="isShowBackTop"/>
     </div>
   </div>
 </template>
@@ -19,7 +27,6 @@
   import tabConstrol from "components/content/tabConstrol/tabConstrol";
   import goodsList from "components/content/goods/goodsList";
   import Bscroll from "components/common/BScroll/Bscroll";
-  import BackTop from "components/content/backtop/BackTop";
 
   import HomeSwiper  from "./childcomps/HomeSwiper";
   import RecommendView from "./childcomps/RecommendView";
@@ -27,6 +34,8 @@
 
 
   import {getHomeMultidata,getHomeGoods} from "network/home"
+  import {ItemImgListenerMixin, BottomBar} from "common/mixin";
+
   export default {
     name: "Home",
     components:{
@@ -34,7 +43,6 @@
       tabConstrol,
       goodsList,
       Bscroll,
-      BackTop,
       HomeSwiper,
       RecommendView,
       fauterView,
@@ -49,13 +57,16 @@
           'sell':{page:0,list:[]},
         },
         currentType:'pop',
-        isShowbacktop:false
+        isTop:637,
+        isFixed:false,
+        saveY:0,
       }
     },
+    mixins:[ItemImgListenerMixin,BottomBar],
     computed:{
       showGoods(){
         return this.goods[this.currentType].list
-      }
+      },
     },
     created() {
       //1.请求多个数据
@@ -63,6 +74,16 @@
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
+    },
+    activated(){
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+    },
+    deactivated(){
+      //保存y值
+      this.saveY = this.$refs.scroll.getScrollY()
+      //取消全局事件的监听
+      this.$bus.$off('itemImageLoad',this.itemImgListener)
     },
     methods:{
       /*
@@ -80,15 +101,20 @@
             this.currentType = 'sell'
             break;
         }
-      },
-      backClick(){
-        this.$refs.scroll.scrollTo(0, 0, 500)
+        this.$refs.tabConstrol2.currentIndex = index
+        this.$refs.tabConstrol1.currentIndex = index
       },
       contentScroll(position){
-        this.isShowbacktop = -(position.y) > 1000
+        //1.判断backtop是否显示
+        this.listShowBackTop(position)
+        //2.判断tabconstrol是否吸顶
+        this.isFixed = -(position.y) > this.isTop
       },
       LoadMore(){
         this.getHomeGoods(this.currentType)
+      },
+      imageLoad(){
+        this.isTop = this.$refs.tabConstrol2.$el.offsetTop;
       },
       /*
       *网络请求相关的方法
@@ -105,6 +131,8 @@
         getHomeGoods(type, page).then(res=>{
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page +=1
+          //完成上拉加载更多
+          this.$refs.scroll.finishPullUp()
         })
       }
     }

@@ -1,5 +1,8 @@
 import axios from 'axios'
-
+import Vue from 'vue'
+import qs from 'qs';
+Vue.prototype.$qs = qs;
+Vue.prototype.$axios = axios;
 export function request(config){
   // 1.实例化一个axios
   const instance = axios.create({
